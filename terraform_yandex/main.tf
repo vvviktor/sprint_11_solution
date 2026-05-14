@@ -7,7 +7,7 @@ resource "tls_private_key" "ssh" {
 resource "local_file" "private_key" {
   for_each = var.virtual_machines
   content = tls_private_key.ssh[each.key].private_key_pem
-  filename = "${path.module}ssh_keys/ssh_key_${each.key}"
+  filename = "${path.module}/ssh_keys/ssh_key_${each.key}"
   file_permission = "600"
 }
 
