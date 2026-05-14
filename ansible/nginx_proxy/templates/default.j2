@@ -1,0 +1,13 @@
+upstream target_http {
+	server {{ hostvars['vm-2']['ansible_host'] }}:80;
+	server {{ hostvars['vm-3']['ansible_host'] }}:80; 
+}
+
+server {
+	listen 3000;
+	server_name test-proxy.example;
+
+	location / {
+		proxy_pass http://target_http;
+	}
+}

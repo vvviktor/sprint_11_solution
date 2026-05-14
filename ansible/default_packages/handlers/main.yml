@@ -1,0 +1,8 @@
+---
+- name: Nginx Launcher
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes
+  listen: "Nginx Launcher"
+

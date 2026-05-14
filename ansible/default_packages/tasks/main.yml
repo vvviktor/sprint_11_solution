@@ -1,0 +1,46 @@
+---
+# tasks file for default_package
+
+- name: Выполнить apt update
+  apt:
+    update_cache: yes
+
+- name: Установка программ #Имя задачи 
+  apt: #Используемый модуль
+    name: "{{ item }}" #Имя пакета из цикла
+    state: present #Параметр действия. present - установить, absent - удалить
+  loop: "{{ packages_to_install }}" #Цикл будет перебирать все значения из переменной "packages"
+  register: apt_result
+  when: ansible_distribution == "Ubuntu" # Выполнится только на Debian системах
+
+- name: Restart Nginx if installed and changed
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes  
+  loop: "{{ apt_result.results }}"
+  loop_control:
+    label: "{{ item.item }}"
+  when:
+    - item.item == "nginx"    
+
+- name: Получить только имя хоста
+  command: hostname
+  register: result
+
+- name: Установить значение ansible_hostname
+  set_fact:
+    ansible_hostname: "{{ result.stdout.strip() }}"
+
+- name: Показать текущее имя хоста
+  debug:
+    msg: "Текущее имя хоста: {{ ansible_hostname }}"
+
+- name: Меняем имя машины
+  shell: "echo {{ inventory_hostname }} > /etc/hostname"
+  when: "inventory_hostname != ansible_hostname"
+
+- name: Проверка результата смены имени
+  debug:
+    msg: "Имя хоста изменено на {{ inventory_hostname }}"
+  when: inventory_hostname != ansible_hostname

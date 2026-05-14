@@ -1,0 +1,21 @@
+---
+- name: Установка стандартных пакетов
+  hosts: linux
+  roles:
+    - role: default_packages
+  tags:
+    - install_packages
+
+- name: Установка и настройка nginx c кастомной страницей
+  hosts: nginx_server
+  roles:
+    - role: nginx_server
+  tags:
+    - nginx_server
+
+- name: Настройка проксирования
+  hosts: nginx_proxy
+  roles:
+    - role: nginx_proxy
+  tags:
+    - nginx_proxy
