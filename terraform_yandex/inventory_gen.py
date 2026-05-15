@@ -60,6 +60,6 @@ if __name__ == '__main__':
 
     output_file_path = sys.argv[1]
     host_ip_dict = json.loads(subprocess.check_output(['terraform', 'output', '-json', 'vm_nat_ip'], text=True))
-    host_key_dict = json.loads(subprocess.check_output(['terraform', 'output', '-json', 'vm_key'], text=True))
+    host_key_dict = json.loads(subprocess.check_output(['terraform', 'output', '-json', 'vm_key_filename'], text=True))
     
     write_yaml_to_file_from_dict(output_file_path, generate_inventory_dict(host_ip_dict, host_key_dict))

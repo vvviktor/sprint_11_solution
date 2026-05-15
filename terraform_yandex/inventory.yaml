@@ -1,0 +1,23 @@
+linux:
+  children:
+    nginx_proxy:
+      hosts:
+        vm-1:
+          ansible_host: 51.250.66.203
+          ansible_user: ubuntu
+          ansible_ssh_private_key_file: ./ssh_keys/ssh_key_vm-1
+    nginx_server:
+      hosts:
+        vm-2:
+          ansible_host: 51.250.76.85
+          ansible_user: ubuntu
+          ansible_ssh_private_key_file: ./ssh_keys/ssh_key_vm-2
+        vm-3:
+          ansible_host: 51.250.8.23
+          ansible_user: ubuntu
+          ansible_ssh_private_key_file: ./ssh_keys/ssh_key_vm-3
+  vars:
+    connection_protocol: ssh
+    ansible_become: 'true'
+    ansible_become_method: sudo
+    ansible_become_user: root
